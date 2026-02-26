@@ -1,5 +1,5 @@
 import pytest
-from handlers.validators import (
+from validators import (
     is_valid_date,
     is_valid_time,
     is_valid_url,
@@ -18,7 +18,7 @@ class TestValidateDate:
             '2026-05-12',
             '2100-01-01',
             '2026-12-31',
-            '2028-02-29',  # leap year
+            '2028-02-29'
         ]
         for date in valid_dates:
             assert is_valid_date(date), f"Expected {date} to be valid"
@@ -29,7 +29,7 @@ class TestValidateDate:
             '2000-05-12',
             '2023-12-31',
             '1999-06-15',
-            '2025-09-30',
+            '2025-09-30'
         ]
         for date in invalid_dates:
             assert not is_valid_date(date), f"Expected {date} to be invalid"
@@ -38,7 +38,7 @@ class TestValidateDate:
     def test_invalid_month(self):
         invalid_dates = [
             '2026-00-12',
-            '2026-13-12',
+            '2026-13-12'
         ]
         for date in invalid_dates:
             assert not is_valid_date(date), f"Expected {date} to be invalid"
@@ -49,9 +49,9 @@ class TestValidateDate:
             '2026-05-00',
             '2026-05-32',
             '2027-02-30',
-            '2027-02-29',  # not a leap year
+            '2027-02-29',
             '2027-04-31',
-            '2027-11-31',
+            '2027-11-31'
         ]
         for date in invalid_dates:
             assert not is_valid_date(date), f"Expected {date} to be invalid"
@@ -70,7 +70,7 @@ class TestValidateDate:
             '20260512',
             '05-12',
             'invalid',
-            '',
+            ''
         ]
         for date in invalid_formats:
             assert not is_valid_date(date), f"Expected {date} to be invalid format"
@@ -97,7 +97,7 @@ class TestValidateTime:
             '16:30',
             '16:30:00',
             '23:59',
-            '23:59:59',
+            '23:59:59'
         ]
         for time in valid_times:
             assert is_valid_time(time), f"Expected {time} to be valid"
@@ -109,7 +109,7 @@ class TestValidateTime:
             '24:00:00',
             '25:30',
             '-1:00',
-            '99:00',
+            '99:00'
         ]
         for time in invalid_times:
             assert not is_valid_time(time), f"Expected {time} to be invalid"
@@ -120,7 +120,7 @@ class TestValidateTime:
             '10:60',
             '10:99',
             '10:-1',
-            '10:5',     # single digit minute
+            '10:5'
         ]
         for time in invalid_times:
             assert not is_valid_time(time), f"Expected {time} to be invalid"
@@ -131,7 +131,7 @@ class TestValidateTime:
             '10:30:60',
             '10:30:99',
             '10:30:-1',
-            '10:30:5',  # single digit second
+            '10:30:5'
         ]
         for time in invalid_times:
             assert not is_valid_time(time), f"Expected {time} to be invalid"
@@ -147,7 +147,7 @@ class TestValidateTime:
             '09.00',
             '0900',
             'invalid',
-            '',
+            ''
         ]
         for time in invalid_formats:
             assert not is_valid_time(time), f"Expected {time} to be invalid"
@@ -183,7 +183,7 @@ class TestValidateURL:
             'https://example.com/path?query=value#fragment',
             'ftp://files.example.com',
             'https://my-site.example.com',
-            'https://example123.com',
+            'https://example123.com'
         ]
         for url in valid_urls:
             assert is_valid_url(url), f"Expected {url} to be valid"
@@ -195,7 +195,7 @@ class TestValidateURL:
             'www.example.com',          # No protocol
             'htp://example.com',        # Typo in protocol
             'file://example.com',       # Unsupported protocol
-            '://example.com',           # Missing protocol name
+            '://example.com'
         ]
         for url in invalid_urls:
             assert not is_valid_url(url), f"Expected {url} to be invalid"
@@ -209,7 +209,7 @@ class TestValidateURL:
             'https://example',          # Missing TLD
             'https://example.',         # Incomplete TLD
             'https://-example.com',     # Domain starts with hyphen
-            'https://example-.com',     # Domain ends with hyphen
+            'https://example-.com'
         ]
         for url in invalid_urls:
             assert not is_valid_url(url), f"Expected {url} to be invalid"
@@ -221,7 +221,7 @@ class TestValidateURL:
             'https://example.com:443',
             'https://example.com:8080',
             'https://example.com:3000',
-            'https://example.com:65535',
+            'https://example.com:65535'
         ]
         for url in valid_urls:
             assert is_valid_url(url), f"Expected {url} to be valid"
@@ -236,7 +236,7 @@ class TestValidateURL:
             'https://example.com/path_with_underscore',
             'https://example.com/path-with-hyphen',
             'https://example.com/(parentheses)',
-            "https://example.com/path'with'quotes",
+            "https://example.com/path'with'quotes"
         ]
         for url in valid_urls:
             assert is_valid_url(url), f"Expected {url} to be valid"
@@ -329,7 +329,7 @@ class TestValidateEmail:
             "1234567890@example.com",
             "user@example-hyphen.com",
             "user.name+tag@example.com",
-            "x@example.com",  # Single character local part
+            "x@example.com",
             "user@sub.domain.example.com"
         ]
         for email in valid_emails:
@@ -406,7 +406,7 @@ class TestValidateEmail:
             ("@example.com", False),  # No local part
             ("user@", False),  # No domain
             ("", False),  # Empty string
-            ("  ", False),  # Whitespace
+            ("  ", False)  # Whitespace
         ]
         for email, expected in edge_cases:
             result = is_valid_email(email)
@@ -415,13 +415,13 @@ class TestValidateEmail:
     def test_whitespace_handling(self):
         """Test handling of whitespace in emails."""
         whitespace_cases = [
-            " user@example.com",  # Leading space
-            "user@example.com ",  # Trailing space
-            " user@example.com ",  # Both
-            "user @example.com",  # Space before @
-            "user@ example.com",  # Space after @
-            "user@exam ple.com",  # Space in domain
-            "\tuser@example.com",  # Tab character
+            " user@example.com",
+            "user@example.com ",
+            " user@example.com ",
+            "user @example.com",
+            "user@ example.com",
+            "user@exam ple.com",
+            "\tuser@example.com"
         ]
         for email in whitespace_cases:
             assert not is_valid_email(email), f"Expected '{repr(email)}' to be invalid"
@@ -430,11 +430,11 @@ class TestValidateEmail:
         """Test special characters in email addresses."""
         # Valid special characters
         valid_special = [
-            "user+tag@example.com",  # Plus sign
-            "user_name@example.com",  # Underscore
-            "user-name@example.com",  # Hyphen
-            "user.name@example.com",  # Dot
-            "first.last+tag@example.com",  # Combination
+            "user+tag@example.com",
+            "user_name@example.com",
+            "user-name@example.com",
+            "user.name@example.com",
+            "first.last+tag@example.com"
         ]
         for email in valid_special:
             assert is_valid_email(email), f"Expected '{email}' to be valid"
@@ -454,7 +454,7 @@ class TestValidateEmail:
             "user{name@example.com",
             "user}name@example.com",
             "user|name@example.com",
-            "user~name@example.com",
+            "user~name@example.com"
         ]
         for email in invalid_special:
             assert not is_valid_email(email), f"Expected '{email}' to be invalid"
@@ -648,7 +648,7 @@ class TestParametrizedValidation:
     @pytest.mark.parametrize("field_name,field_value", [
         ("name", ""), ("name", None), ("time", ""), ("time", None),
         ("date", ""), ("date", None), ("location", ""), ("location", None),
-        ("link", ""), ("link", None), ("email", ""), ("email", None),
+        ("link", ""), ("link", None), ("email", ""), ("email", None)
     ])
     def test_required_field_empty_or_none_returns_false(self, field_name, field_value):
         user_input = {

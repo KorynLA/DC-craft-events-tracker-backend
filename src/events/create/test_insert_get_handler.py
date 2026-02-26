@@ -1,6 +1,6 @@
 import pytest
 import html
-from handlers.insert_event_handler import sanitize_input
+from insert_event_handler import sanitize_input
 
 
 class TestSanitizeInput:
