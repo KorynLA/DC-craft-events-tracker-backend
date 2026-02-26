@@ -21,9 +21,9 @@ aws_session_token=os.environ['AWS_SESSION_TOKEN']
 URL=os.environ['PARAMETERS_SECRETS_EXTENSION_URL']
 
 DB_NAME=os.environ['DB_NAME']
-USER=os.environ['USER']
-PORT=os.environ['PORT']
-HOST=os.environ['HOST']
+USER=os.environ['DB_USER']
+PORT=os.environ['DB_PORT']
+HOST=os.environ['DB_HOST']
 DB_PASS_KEY=os.environ['DB_PASS_KEY']
 
 def return_error(code, message):

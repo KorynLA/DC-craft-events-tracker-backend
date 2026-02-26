@@ -1,0 +1,61 @@
+services:
+  database:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 1g
+    environment:
+      POSTGRES_USER: ${DB_USER} 
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME} 
+    volumes:
+      - ./local/postgres-init:/docker-entrypoint-initdb.d
+  localstack:
+    container_name: lambda
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    restart: unless-stopped
+    environment:
+      - SERVICES=lambda,ssm
+      - DEBUG=1
+    networks:
+      - lambda-network
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+  mock-extension:
+    container_name: mock-extension
+    build:
+      context: .
+      dockerfile: Dockerfile.mock
+    ports:
+      - "2773:2773"
+    depends_on:
+      localstack:
+        condition: service_healthy
+    networks:
+      - lambda-network
+    environment:
+      - AWS_ENDPOINT_URL=http:localstack:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+      - LOCALSTACK_ENDPOINT=http://localstack:4566
+  redis:
+    container_name: redis-cache
+    image: redis:latest
+    command: redis-server
+    ports:
+      - 6379:6379
+networks:
+  lambda-network:
+    driver: bridge

@@ -30,9 +30,10 @@ env = os.environ['ENV']
 url=os.environ['PARAMETERS_SECRETS_EXTENSION_URL']
 
 dbname = os.environ['DB_NAME']
-user = os.environ['USER']
-port = os.environ['PORT']
-host = os.environ['HOST']
+user = os.environ['DB_USER']
+port = os.environ['DB_PORT']
+host = os.environ['DB_HOST']
+DB_PASS_KEY=os.environ['DB_PASS_KEY']
 
 def return_error(code, message):
 	return {
@@ -76,7 +77,7 @@ def lambda_handler(event, context):
 		res = requests.get(
     		url_config,
     		headers={"X-Aws-Parameters-Secrets-Token": aws_session_token},
-    		params={"name": "dbPa", "withDecryption": "true"}
+    		params={"name": DB_PASS_KEY, "withDecryption": "true"}
     		)
 		password = res.json()['Parameter']['Value']
 	except Exception as e:
