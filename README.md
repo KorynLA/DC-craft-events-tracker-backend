@@ -18,10 +18,9 @@ Project that gets events from a postgres database or redis, and inserts events i
 ## Run the Lambda
 1. Open Docker Desktop
    - Starts Docker Engine
-3. docker compose up --build
-   - Build the images and starts the service
-3. docker compose up
-   - If the images were built, and no changes were made to the docker files use this command to start the service. 
+2. docker compose up
+   - If the images were built, and no changes were made to the docker files use this command to start the service.
+   - Add --build at the end of the command if the images weren't previously built.
 4. aws --endpoint-url=http://localhost:4566 ssm put-parameter --name {ssm_name) --value {password_value} --type SecureString
    - Adds the password that will be used for the Postgres database you are testing. SSM is used in the Lambda to prevent hardcoding the password.
      - Update {ssm_name} with the name of the key in the .env file under DB_PASS_KEY variable.
