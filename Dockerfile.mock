@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN pip install flask boto3 requests
+
+COPY local/mock_extension.py .
+
+CMD ["python", "mock_extension.py"]
