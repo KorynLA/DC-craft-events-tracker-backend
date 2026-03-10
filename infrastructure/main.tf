@@ -6,9 +6,11 @@ terraform {
     }
   }
 }
+
 provider "aws" {
   region = "us-east-1"
 }
+
 resource "aws_s3_bucket" "create_dmv_bucket" {
   bucket        = "${var.name_prefix}-bucket"
   force_destroy = true
@@ -34,7 +36,6 @@ resource "aws_cognito_user_pool" "create_dmv" {
   }
 }
 
-# ADD: Google identity provider
 resource "aws_cognito_identity_provider" "create_dmv_google" {
   user_pool_id  = aws_cognito_user_pool.create_dmv.id
   provider_name = "Google"
