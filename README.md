@@ -1,7 +1,9 @@
-#Documentation
-[API YAML](https://korynla.substack.com/p/createdmv-api-documentation)
 # About the Project
 Project that gets events from a postgres database or redis, and inserts events into a database using lambdas. 
+
+# Documentation
+The API Documentation can be found on this substack in YAML form: [API YAML](https://korynla.substack.com/p/createdmv-api-documentation)
+
 # Technologies
 - [Docker](https://www.docker.com/): Either Docker Desktop or Docker Engine can be used. This setup will use Docker Desktop.
   - [Docker Desktop](https://docs.docker.com/desktop/)
